@@ -24,8 +24,8 @@ import {
 <template>
     <Card class="w-80">
         <CardHeader>
-            <CardTitle>Settings</CardTitle>
-            <CardDescription>Apply settings</CardDescription>
+            <CardTitle>Convert</CardTitle>
+            <CardDescription>Configure conversion</CardDescription>
         </CardHeader>
         <CardContent>
                 <Select>

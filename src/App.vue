@@ -7,10 +7,14 @@ import UploadPanel from './components/UploadPanel.vue';
 
 <template>
   <div class="bg-background text-foreground">
-    <div class="absolute right-0">
+    <div class="absolute top-2 right-2">
       <SettingsPanel />
     </div>
-    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+    <div class="absolute top-1/7 left-1/2 transform -translate-x-1/2">
+      <h1 class="text-7xl/15 lg:text-9xl/28 text-center font-semibold">Local File Converter</h1>
+      <p class="text-base/10 lg:text-xl/25 text-center">for those who refuese to install software</p>
+    </div>
+    <div class="absolute top-5/8 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
       <div class="flex flex-col lg:flex-row space-x-1 space-y-1">
         <UploadPanel class="" />
         <ConvertPanel class="" />
