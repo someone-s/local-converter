@@ -7,12 +7,17 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import Progress from './ui/progress/Progress.vue';
+import { ref } from "vue";
+
+const progress = ref(2);
+
+defineExpose({progress});
 </script>
 
 <template>
     <Card class="w-80">
         <CardHeader>
-            <CardTitle>Download</CardTitle>
+            <CardTitle>Status</CardTitle>
             <CardDescription>Get Converted File</CardDescription>
         </CardHeader>
         <CardContent>
@@ -20,7 +25,7 @@ import Progress from './ui/progress/Progress.vue';
                 <div class="text-left">Progress</div>
                 <div class="text-right">0%</div>
             </div>
-            <Progress></Progress>
+            <Progress v-model="progress"></Progress>
         </CardContent>
     </Card>
 </template>
