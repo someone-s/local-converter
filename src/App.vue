@@ -1,10 +1,22 @@
 <script setup lang="ts">
-import { Button } from '@/components/ui/button'
+import ConvertPanel from './components/ConvertPanel.vue';
+import DownloadPanel from './components/DownloadPanel.vue';
+import SettingsPanel from './components/SettingsPanel.vue';
+import UploadPanel from './components/UploadPanel.vue';
 </script>
 
 <template>
-  <div>
-    <Button>Click me</Button>
+  <div class="bg-background text-foreground">
+    <div class="absolute right-0">
+      <SettingsPanel />
+    </div>
+    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+      <div class="flex flex-col lg:flex-row space-x-1 space-y-1">
+        <UploadPanel class="" />
+        <ConvertPanel class="" />
+        <DownloadPanel class="" />
+      </div>
+    </div>
   </div>
 </template>
 
