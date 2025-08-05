@@ -14,5 +14,8 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     }
   },
+  optimizeDeps: {
+    exclude: ['@ffmpeg/ffmpeg', '@ffmpeg/util']
+  },
   base: '/local-converter/'
 })
