@@ -23,7 +23,8 @@ function selectionClicked(value: Event) {
     emit('file-selected', path);
 }
 
-const supportedFiles = Object.keys(mimeLookup).map(plain => `.${plain}`).join(',');
+const supportedFiles = Object.values(mimeLookup).join(',');
+//const supportedFiles = Object.keys(mimeLookup).map(plain => `.${plain}`).join(',');
 </script>
 
 <template>
