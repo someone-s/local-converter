@@ -44,7 +44,9 @@ function setProgress() {
     if (progressBar.value != null)
     {
       console.log(progressBar.value.progress);
-      progressBar.value.progress = storedTime / storedDuration * 100.;
+      const value = storedTime / storedDuration * 100.;
+      if (!Number.isNaN(value))
+        progressBar.value.progress = value;
     }
 }
 
