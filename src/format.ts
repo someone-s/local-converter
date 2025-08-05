@@ -18,4 +18,6 @@ export const mimeLookup : { [ext: string]: string } = {
   'ts': 'video/mp2t',
   'webm': 'video/webm',
   'webp': 'image/webp',
+  'heic': 'image/heic',
+  'heif': 'image/heif',
 };
