@@ -1,18 +1,23 @@
 <script setup lang="ts">
 import { fetchFile, toBlobURL } from '@ffmpeg/util';
 import ConvertPanel from './components/ConvertPanel.vue';
-import DownloadPanel from './components/DownloadPanel.vue';
+import StatusPanel from './components/StatusPanel.vue'
 import SettingsPanel from './components/SettingsPanel.vue';
 import UploadPanel from './components/UploadPanel.vue';
 import { FFmpeg, type LogEvent } from '@ffmpeg/ffmpeg';
 import { mimeLookup } from './format';
 import { downloadZip } from 'client-zip';
+import { useTemplateRef } from 'vue';
 
 const baseUrl = 'https://unpkg.com/@ffmpeg/core@0.12.10/dist/esm'
 const ffmpeg = new FFmpeg();
 
 let storedFiles = [] as File[];
 let storedFormat = '';
+
+const progressBar = useTemplateRef("progressBar");
+let storedTime = 0.;
+let storedDuration = Number.MAX_VALUE;
 
 async function setFile(files: File[]) {
   storedFiles = files;
@@ -22,12 +27,49 @@ async function setFormat(format: string) {
   storedFormat = format;
 }
 
+function getTime(timeStr: string): number {
+  let time = 0.0;
+  time += Number.parseFloat(timeStr[0]) * 36000;
+  time += Number.parseFloat(timeStr[1]) * 3600;
+  time += Number.parseFloat(timeStr[3]) * 600;
+  time += Number.parseFloat(timeStr[4]) * 60.;
+  time += Number.parseFloat(timeStr[6]) * 10.;
+  time += Number.parseFloat(timeStr[7]) * 1.;
+  time += Number.parseFloat(timeStr[9]) * 0.1;
+  time += Number.parseFloat(timeStr[10]) * 0.01;
+  return time;
+}
+
+function setProgress() {
+    if (progressBar.value != null)
+    {
+      console.log(progressBar.value.progress);
+      progressBar.value.progress = storedTime / storedDuration * 100.;
+    }
+}
+
 async function execute() {
+  storedDuration = Number.MAX_VALUE;
+
   if (!(storedFiles.length > 0 && storedFormat in mimeLookup))
     return;
 
   ffmpeg.on('log', ({ message: msg }: LogEvent) => {
-    console.log(msg)
+    console.log(msg);
+
+    if (msg.startsWith("frame=")) {
+      const begin = msg.indexOf('time=') + 5;
+      const timeStr = msg.substring(begin, msg.indexOf(' bitrate', begin));
+      storedTime = getTime(timeStr);
+      setProgress();
+      
+    }
+    else if (msg.startsWith("  Duration")) {
+      const begin = msg.indexOf('Duration: ') + 10;
+      const timeStr = msg.substring(begin, msg.indexOf(', start', begin));
+      storedDuration = getTime(timeStr);
+      setProgress();
+    }
   })
   await ffmpeg.load({
     coreURL: await toBlobURL(`${baseUrl}/ffmpeg-core.js`, 'text/javascript'),
@@ -80,7 +122,7 @@ async function execute() {
         if (entry.isDir) continue;
 
         const exportPath = `${tempDir}/${entry.name}`;
-          const data = await ffmpeg.readFile(exportPath);
+        const data = await ffmpeg.readFile(exportPath);
         const exportBlob = new Blob([(data as Uint8Array).buffer], { type: mimeLookup[storedFormat] });
 
         exports.push({
@@ -92,8 +134,6 @@ async function execute() {
 
         await ffmpeg.deleteFile(exportPath);
       };
-
-      console.log(exports);
 
       const blob = await downloadZip(exports).blob();
 
@@ -128,6 +168,10 @@ async function execute() {
     }
 
     await ffmpeg.deleteDir(tempDir);
+
+    storedTime = 0.;
+    storedDuration = Number.MAX_VALUE;
+    setProgress();
   });
 }
 
@@ -146,7 +190,7 @@ async function execute() {
       <div class="flex flex-col lg:flex-row space-x-1 space-y-1">
         <UploadPanel @file-selected="setFile" />
         <ConvertPanel @convert-clicked="execute" @format-selected="setFormat" />
-        <DownloadPanel />
+        <StatusPanel ref="progressBar" />
       </div>
     </div>
   </div>
