@@ -1,8 +1,69 @@
 <script setup lang="ts">
+import { fetchFile, toBlobURL } from '@ffmpeg/util';
 import ConvertPanel from './components/ConvertPanel.vue';
 import DownloadPanel from './components/DownloadPanel.vue';
 import SettingsPanel from './components/SettingsPanel.vue';
 import UploadPanel from './components/UploadPanel.vue';
+
+import { FFmpeg, type LogEvent } from '@ffmpeg/ffmpeg';
+
+const baseUrl = 'https://unpkg.com/@ffmpeg/core-mt@0.12.10/dist/esm'
+const videoURL = 'https://raw.githubusercontent.com/ffmpegwasm/testdata/master/video-15s.avi'
+const ffmpeg = new FFmpeg();
+
+// let storedFiles = [] as File[];
+
+// async function setFile(files: File[]) {
+//   storedFiles = files;
+// }
+
+async function execute() {
+  console.log('0');
+  ffmpeg.on('log', ({ message: msg }: LogEvent) => {
+        console.log(msg)
+      })
+  await ffmpeg.load({
+    coreURL: await toBlobURL(`${baseUrl}/ffmpeg-core.js`, 'text/javascript'),
+    wasmURL: await toBlobURL(`${baseUrl}/ffmpeg-core.wasm`, 'application/wasm'),
+    workerURL: await toBlobURL(`${baseUrl}/ffmpeg-core.js`, 'text/javascript')
+  });
+
+  console.log('A');
+  await ffmpeg.writeFile('test.avi', await fetchFile(videoURL));
+  console.log('B');
+  await ffmpeg.exec(['-i', 'test.avi', 'test.mp4']);
+  console.log('C');
+  const data = await ffmpeg.readFile('test.mp4');
+  const blob = new Blob([(data as Uint8Array).buffer], { type: 'video/mp4' });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = "test.mp4";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+  console.log('D');
+  
+  // storedFiles.forEach(async (file) => {
+  //   await ffmpeg.writeFile(file.name, await fetchFile(file));
+  //   await ffmpeg.exec(['-i', file.name, 'test.mp4']);
+  //   const data = await ffmpeg.readFile('test.mp4');
+  //   const blob = new Blob([(data as Uint8Array).buffer], { type: 'video/mp4' });
+  //   const url = URL.createObjectURL(blob);
+
+  //   const link = document.createElement('a');
+  //   link.href = url;
+  //   link.download = "test.mp4";
+  //   document.body.appendChild(link);
+  //   link.click();
+  //   document.body.removeChild(link);
+
+  //   URL.revokeObjectURL(url);
+  // });
+}
+
 </script>
 
 <template>
@@ -16,9 +77,10 @@ import UploadPanel from './components/UploadPanel.vue';
     </div>
     <div class="absolute top-5/8 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
       <div class="flex flex-col lg:flex-row space-x-1 space-y-1">
-        <UploadPanel class="" />
-        <ConvertPanel class="" />
-        <DownloadPanel class="" />
+        <!--<UploadPanel @file-selected="setFile" />-->
+        <UploadPanel />
+        <ConvertPanel @convert-clicked="execute" />
+        <DownloadPanel />
       </div>
     </div>
   </div>

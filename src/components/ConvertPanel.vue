@@ -1,4 +1,6 @@
 <script setup lang="ts">
+defineEmits(['convert-clicked']);
+
 import {
     Button
 } from '@/components/ui/button'
@@ -46,7 +48,7 @@ import {
                     </SelectGroup>
                 </SelectContent>
             </Select>
-            <Button>Convert Now</Button>
+            <Button @click="$emit('convert-clicked')">Convert Now</Button>
             </div>
         </CardContent>
     </Card>
