@@ -19,8 +19,8 @@ export default defineConfig({
   },
   server: {
     headers: {
-      'Cross-Origin-Opener-Policy': 'same-origin always',
-      'Cross-Origin-Embedder-Policy': 'require-corp always'
+      'Cross-Origin-Opener-Policy': 'same-origin',
+      'Cross-Origin-Embedder-Policy': 'require-corp'
     }
   },
   base: '/local-converter/'
