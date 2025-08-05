@@ -2,12 +2,23 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="/local-converter.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Local File Converter</title>
+    <meta name="desciption" content="A file converter that runs locally on your browser without sending files to a remote server">
+    <meta name="author" content="someone-s">
+    <meta property="og:title" content="Local File Converter">
+    <meta property="og:type" content="website">
+    <meta id="loc" property="og:url" content="https://someone-s.github.io/local-converter/">
+    <meta property="og:description" content="A file converter that runs locally on your browser without sending files to a remote server">
+    <meta property="og:image" content="/local-converter.svg">
   </head>
   <body>
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
+
+<script>
+  document.querySelector('#loc').setAttribute('content', location.href);
+</script>
