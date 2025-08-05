@@ -7,7 +7,7 @@ import UploadPanel from './components/UploadPanel.vue';
 
 import { FFmpeg, type LogEvent } from '@ffmpeg/ffmpeg';
 
-const baseUrl = 'https://unpkg.com/@ffmpeg/core-mt@0.12.10/dist/esm'
+const baseUrl = 'https://unpkg.com/@ffmpeg/core@0.12.10/dist/esm'
 const ffmpeg = new FFmpeg();
 
 let storedFiles = [] as File[];
