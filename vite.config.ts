@@ -17,5 +17,11 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ['@ffmpeg/ffmpeg', '@ffmpeg/util']
   },
+  server: {
+    headers: {
+      'Cross-Origin-Opener-Policy': 'same-origin always',
+      'Cross-Origin-Embedder-Policy': 'require-corp always'
+    }
+  },
   base: '/local-converter/'
 })
