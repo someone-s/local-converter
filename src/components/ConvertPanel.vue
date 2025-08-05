@@ -1,5 +1,5 @@
 <script setup lang="ts">
-defineEmits(['convert-clicked']);
+const emit = defineEmits(['convert-clicked', 'format-selected']);
 
 import {
     Button
@@ -20,6 +20,12 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { mimeLookup } from '../format';
+
+function onDropdown(x:any) {
+    if (typeof x === "string") 
+        emit('format-selected', x);
+}
 </script>
 
 <template>
@@ -30,21 +36,18 @@ import {
         </CardHeader>
         <CardContent>
             <div class="flex flex-row space-x-2">
-            <Select class="">
+            <Select @update:model-value="onDropdown">
                 <SelectTrigger class="w-[180px]">
                     <SelectValue placeholder="Select File Type" />
                 </SelectTrigger>
                 <SelectContent>
                     <SelectGroup>
                         <SelectLabel>Video</SelectLabel>
-                        <SelectItem value="mp4">mp4</SelectItem>
-                        <SelectItem value="webm">webm</SelectItem>
+                        <SelectItem v-for="ext in Object.entries(mimeLookup).filter(pair => pair[1].startsWith('video')).map(pair => pair[0])" v-bind:value="ext">{{ext}}</SelectItem>
                     </SelectGroup>
                     <SelectGroup>
                         <SelectLabel>Image</SelectLabel>
-                        <SelectItem value="tiff">tiff</SelectItem>
-                        <SelectItem value="png">png</SelectItem>
-                        <SelectItem value="jpg">jpg</SelectItem>
+                        <SelectItem v-for="ext in Object.entries(mimeLookup).filter(pair => pair[1].startsWith('image')).map(pair => pair[0])" v-bind:value="ext">{{ext}}</SelectItem>
                     </SelectGroup>
                 </SelectContent>
             </Select>
