@@ -3,10 +3,10 @@ import {
     Card,
     CardContent,
     CardDescription,
-    CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
+import Input from "@/components/ui/input/Input.vue";
 </script>
 
 <template>
@@ -16,10 +16,7 @@ import {
             <CardDescription>Drop file here</CardDescription>
         </CardHeader>
         <CardContent>
-            <p>Card Content</p>
+            <Input id="file" type="file" multiple></Input>
         </CardContent>
-        <CardFooter>
-            <p>Card Footer</p>
-        </CardFooter>
     </Card>
 </template>
