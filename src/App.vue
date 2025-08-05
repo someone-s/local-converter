@@ -182,9 +182,9 @@ async function execute() {
     <div class="absolute top-2 right-2">
       <SettingsPanel />
     </div>
-    <div class="absolute top-1/7 min-w-96 left-1/2 transform -translate-x-1/2">
-      <h1 class="text-7xl/15 lg:text-9xl/28 text-center font-semibold">Local File Converter</h1>
-      <p class="text-base/10 lg:text-xl/25 text-center">"it maybe temperamental, but usually it works ok"</p>
+    <div class="absolute top-1/7 min-w-84 left-1/2 transform -translate-x-1/2">
+      <h1 class="text-4xl/10 sm:text-7xl/15 lg:text-9xl/28 text-center font-semibold">Local File Converter</h1>
+      <p class="text-sm/5 sm:text-base/10 lg:text-xl/25 text-center">"it maybe temperamental, but usually it works ok"</p>
     </div>
     <div class="absolute top-5/8 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
       <div class="flex flex-col lg:flex-row space-x-1 space-y-1">
