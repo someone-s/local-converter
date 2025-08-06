@@ -100,7 +100,7 @@ async function executeSingle(converter: Converter, inputFile: File, outputMime: 
                 break;
             case 'UNSUPPORTEDFORMAT':
                 toast('Unsupported Format', {
-                    description: `Could not convert ${inputFile.name} of type ${getExtension(inputFile.type)}.`,
+                    description: `Could not convert ${inputFile.name} of type ${inputFile.type}.`,
                     action: {
                         label: 'Dismiss',
                     }

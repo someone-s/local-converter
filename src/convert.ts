@@ -1,5 +1,5 @@
 import { FFmpeg, type LogEvent, type ProgressEventCallback } from "@ffmpeg/ffmpeg";
-import { getCommand, getExtension, isMimeMultiple, isMimeSupport } from "./format";
+import { getCommand, getExtension, isMimeAnimated, isMimeSupport } from "./format";
 import { fetchFile } from "@ffmpeg/util";
 
 export type ConvertError = "UNSUPPORTEDFORMAT" | "EXECUTIONERROR";
@@ -48,7 +48,7 @@ export class Converter {
 
             const inputPath = `${tempDir}/${inputFile.name}`;
 
-            const splitMode = isMimeMultiple(inputFile.type) && !isMimeMultiple(outputMime);
+            const splitMode = isMimeAnimated(inputFile.type) && !isMimeAnimated(outputMime);
             const outputPath = splitMode ?
                 `${tempDir}/${inputFile.name}_%05d.${getExtension(outputMime)}` :
                 `${tempDir}/${inputFile.name}.${getExtension(outputMime)}`;

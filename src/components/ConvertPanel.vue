@@ -20,7 +20,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { getMimeList, getExtension, isMimeMultiple } from '../format';
+import { getMimeList, getExtension, isMimeAnimated } from '../format';
 
 function onDropdown(x:any) {
     if (typeof x === "string") 
@@ -43,11 +43,11 @@ function onDropdown(x:any) {
                 <SelectContent>
                     <SelectGroup>
                         <SelectLabel>Animated</SelectLabel>
-                        <SelectItem v-for="ext in getMimeList().filter(mime => isMimeMultiple(mime)).map(mime => getExtension(mime))" v-bind:value="ext">{{ext}}</SelectItem>
+                        <SelectItem v-for="ext in getMimeList().filter(mime => isMimeAnimated(mime)).map(mime => getExtension(mime))" v-bind:value="ext">{{ext}}</SelectItem>
                     </SelectGroup>
                     <SelectGroup>
                         <SelectLabel>Split Frame</SelectLabel>
-                        <SelectItem v-for="ext in getMimeList().filter(mime => !isMimeMultiple(mime)).map(mime => getExtension(mime))" v-bind:value="ext">{{ext}}</SelectItem>
+                        <SelectItem v-for="ext in getMimeList().filter(mime => !isMimeAnimated(mime)).map(mime => getExtension(mime))" v-bind:value="ext">{{ext}}</SelectItem>
                     </SelectGroup>
                 </SelectContent>
             </Select>
