@@ -1,6 +1,5 @@
 import { FFFSType, FFmpeg, type LogEvent, type ProgressEventCallback } from "@ffmpeg/ffmpeg";
 import { getCommand, getExtension, isMimeAnimated, isMimeSupport } from "./format";
-import { fetchFile } from "@ffmpeg/util";
 
 export type ConvertError = "UNSUPPORTEDFORMAT" | "EXECUTIONERROR";
 
