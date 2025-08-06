@@ -76,6 +76,9 @@ async function executeMultiple() {
         return;
     }
 
+    setProgress(0.);
+    setMode('loading');
+
     const converter = new Converter();
     await converter.setup(true);
 
@@ -120,7 +123,7 @@ async function executeSingle(converter: Converter, inputFile: File, outputMime: 
     const outputFiles = result as File[];
 
     converter.removeProgressListener(listener);
-    setProgress(1.);
+    setProgress(0.99);
 
     if (outputFiles.length == 1) {
         downloadFile(outputFiles[0]);
@@ -131,6 +134,7 @@ async function executeSingle(converter: Converter, inputFile: File, outputMime: 
         downloadFile(new File([zipBlob], `${inputFile.name}.zip`));
     }
 
+    setProgress(1.);
     setMode('');
 }
 
