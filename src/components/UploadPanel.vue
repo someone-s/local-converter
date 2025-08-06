@@ -19,7 +19,6 @@ function selectionClicked(value: Event) {
     const path = [] as File[];
     for (let i = 0; i < list.length; i++)
         path.push(list[i]);
-    console.log(path)
     emit('file-selected', path);
 }
 

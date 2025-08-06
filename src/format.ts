@@ -11,6 +11,7 @@ const mimeExtensions: { [ext: string]: string } = {
     'image/png': 'png',
     'image/tiff': 'tif',
     'video/mp2t': 'ts',
+    'video/quicktime': 'mov',
     'video/webm': 'webm',
     'image/webp': 'webp',
 };
@@ -44,12 +45,17 @@ const mimeMultiple: { [ext: string]: boolean } = {
     'image/png': false,
     'image/tiff': false,
     'video/mp2t': true,
+    'video/quicktime': true,
     'video/webm': true,
     'image/webp': true,
 };
 
-export function isMimeMultiple(mime: string) : boolean {
+export function isMimeAnimated(mime: string) : boolean {
     return mimeMultiple[mime] ?? false;
+}
+
+export function isMimeImage(mime: string) : boolean {
+    return mime.startsWith('image');
 }
 
 const commandLookup: { [ext: string]: string[] } = {
@@ -65,10 +71,9 @@ const commandLookup: { [ext: string]: string[] } = {
     'image/png-video/webm': ['-fflags', '+genpts', '-preset', 'ultrafast', '-c:v', 'libvpx', '-c:a', 'libvorbis', '-crf', '23', '-threads', '0'],
     'image/tiff-video/webm': ['-fflags', '+genpts', '-preset', 'ultrafast', '-c:v', 'libvpx', '-c:a', 'libvorbis', '-crf', '23', '-threads', '0'],
     'video/mp2t-video/webm': ['-fflags', '+genpts', '-preset', 'ultrafast', '-c:v', 'libvpx', '-c:a', 'libvorbis', '-crf', '23', '-threads', '0'],
+    'video/quicktime-video/webm': ['-fflags', '+genpts', '-preset', 'ultrafast', '-c:v', 'libvpx', '-c:a', 'libvorbis', '-crf', '23', '-threads', '0'],
     'video/webm-video/webm': ['-fflags', '+genpts', '-preset', 'ultrafast', '-c:v', 'libvpx', '-c:a', 'libvorbis', '-crf', '23', '-threads', '0'],
     'image/webp-video/webm': ['-fflags', '+genpts', '-preset', 'ultrafast', '-c:v', 'libvpx', '-c:a', 'libvorbis', '-crf', '23', '-threads', '0'],
-    'image/heic-video/webm': ['-fflags', '+genpts', '-preset', 'ultrafast', '-c:v', 'libvpx', '-c:a', 'libvorbis', '-crf', '23', '-threads', '0'],
-    'image/heif-video/webm': ['-fflags', '+genpts', '-preset', 'ultrafast', '-c:v', 'libvpx', '-c:a', 'libvorbis', '-crf', '23', '-threads', '0'],
 }
 
 export function getCommand(inputMime: string, outputMime: string): string[] {
