@@ -49,6 +49,12 @@ function setProgress(progress: number) {
     }
 }
 
+function setMode(mode: string) {
+    if (progressBar.value != null) {
+        progressBar.value.mode = mode;
+    }
+}
+
 async function executeMultiple() {
 
     if (inputFiles == null || inputFiles.length <= 0) {
@@ -82,6 +88,7 @@ async function executeMultiple() {
 async function executeSingle(converter: Converter, inputFile: File, outputMime: string) {
 
     setProgress(0.);
+    setMode('converting');
 
     const listener = ({ progress }: ProgressEvent) => setProgress(progress);
     converter.setupProgressListener(listener);
@@ -119,9 +126,12 @@ async function executeSingle(converter: Converter, inputFile: File, outputMime: 
         downloadFile(outputFiles[0]);
     }
     else {
+        setMode('combining');
         const zipBlob = await downloadZip(outputFiles).blob();
         downloadFile(new File([zipBlob], `${inputFile.name}.zip`));
     }
+
+    setMode('');
 }
 
 
