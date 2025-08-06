@@ -20,7 +20,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
-import { mimeLookup } from '../format';
+import { getMimeList, getExtension, isMimeMultiple } from '../format';
 
 function onDropdown(x:any) {
     if (typeof x === "string") 
@@ -42,12 +42,12 @@ function onDropdown(x:any) {
                 </SelectTrigger>
                 <SelectContent>
                     <SelectGroup>
-                        <SelectLabel>Video</SelectLabel>
-                        <SelectItem v-for="ext in Object.entries(mimeLookup).filter(pair => pair[1].startsWith('video')).map(pair => pair[0])" v-bind:value="ext">{{ext}}</SelectItem>
+                        <SelectLabel>Animated</SelectLabel>
+                        <SelectItem v-for="ext in getMimeList().filter(mime => isMimeMultiple(mime)).map(mime => getExtension(mime))" v-bind:value="ext">{{ext}}</SelectItem>
                     </SelectGroup>
                     <SelectGroup>
-                        <SelectLabel>Image</SelectLabel>
-                        <SelectItem v-for="ext in Object.entries(mimeLookup).filter(pair => pair[1].startsWith('image')).map(pair => pair[0])" v-bind:value="ext">{{ext}}</SelectItem>
+                        <SelectLabel>Split Frame</SelectLabel>
+                        <SelectItem v-for="ext in getMimeList().filter(mime => !isMimeMultiple(mime)).map(mime => getExtension(mime))" v-bind:value="ext">{{ext}}</SelectItem>
                     </SelectGroup>
                 </SelectContent>
             </Select>

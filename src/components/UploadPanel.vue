@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card"
 import Input from "@/components/ui/input/Input.vue";
 import { useTemplateRef } from "vue";
-import { mimeLookup } from "@/format";
+import { getMimeList } from "@/format";
 
 const selection = useTemplateRef<(typeof Input) | null>('selection');
 
@@ -23,8 +23,7 @@ function selectionClicked(value: Event) {
     emit('file-selected', path);
 }
 
-const supportedFiles = Object.values(mimeLookup).join(',');
-//const supportedFiles = Object.keys(mimeLookup).map(plain => `.${plain}`).join(',');
+const supportedFiles = getMimeList().join(',');
 </script>
 
 <template>
