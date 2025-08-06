@@ -117,6 +117,9 @@ async function executeSingle(converter: Converter, inputFile: File, outputMime: 
                 });
                 break;
         }
+
+        setProgress(0.);
+        setMode('');
         return;
     }
 
