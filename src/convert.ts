@@ -1,4 +1,4 @@
-import { FFmpeg, type LogEvent, type ProgressEventCallback } from "@ffmpeg/ffmpeg";
+import { FFFSType, FFmpeg, type LogEvent, type ProgressEventCallback } from "@ffmpeg/ffmpeg";
 import { getCommand, getExtension, isMimeAnimated, isMimeSupport } from "./format";
 import { fetchFile } from "@ffmpeg/util";
 
@@ -45,8 +45,9 @@ export class Converter {
             const tempDir = `tempDir-${crypto.randomUUID()}`;
 
             const ffmpeg = this.ffmpeg;
-
-            const inputPath = `${tempDir}/${inputFile.name}`;
+            
+            const inputMountPath = `${tempDir}/input`;
+            const inputFilePath = `${inputMountPath}/${inputFile.name}`;
 
             const splitMode = isMimeAnimated(inputFile.type) && !isMimeAnimated(outputMime);
             const outputPath = splitMode ?
@@ -55,11 +56,15 @@ export class Converter {
 
             await ffmpeg.createDir(tempDir);
 
-            await ffmpeg.writeFile(inputPath, await fetchFile(inputFile));
+            await ffmpeg.createDir(inputMountPath);
+            await ffmpeg.mount(FFFSType.WORKERFS, {
+                files: [inputFile],
+            }, inputMountPath);
 
-            await ffmpeg.exec(['-i', inputPath].concat(getCommand(inputFile.type, outputMime), outputPath));
+            await ffmpeg.exec(['-i', inputFilePath].concat(getCommand(inputFile.type, outputMime), outputPath));
 
-            await ffmpeg.deleteFile(inputPath);
+            await ffmpeg.unmount(inputMountPath);
+            await ffmpeg.deleteDir(inputMountPath);
 
             const entries = await ffmpeg.listDir(tempDir);
             const files = await Promise.all(entries
@@ -79,7 +84,9 @@ export class Converter {
 
             return files;
         }
-        catch {
+        catch (error) {
+            console.warn(error);
+
             return "EXECUTIONERROR";
         }
     }
